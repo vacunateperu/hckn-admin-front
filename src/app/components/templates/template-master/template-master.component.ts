@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TemplateMasterComponent implements OnInit {
 
+  selected: boolean = true;
+
   constructor() { }
 
   ngOnInit(): void {

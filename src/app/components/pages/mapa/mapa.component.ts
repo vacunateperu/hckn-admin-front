@@ -23,28 +23,21 @@ export class MapaComponent implements OnInit {
 
   overlays: any[];
 
-
-  
-
   constructor(private leafletService: LeafletService) { }
 
   ngOnInit(): void {
-
-    
   }
 
   onMapReady(map: L.Map) {
     
-    var ZOOM_DEPARTAMENTO: number = 6;
-    var ZOOM_PROVINCIA: number = 8;
-    var ZOOM_DISTRITO: number = 10;
-
-    var jsonDeparmento = null;
+    var jsonDepartamento = null;
     var jsonProvincia = null;
     var jsonDistrito = null;
+    var jsonMapa = null;
+    var idColorMapa = 'DEPA';
 
     this.leafletService.getDepartamentos().subscribe(data =>{
-      jsonDeparmento=data;
+      jsonDepartamento=data;
     });
     this.leafletService.getProvincias().subscribe(data =>{
       jsonProvincia=data;
@@ -53,18 +46,35 @@ export class MapaComponent implements OnInit {
     this.leafletService.getDistritos().subscribe(data =>{
       jsonDistrito=data;
     });
-
+    
+    
     map.setView([-9.89, -74.86], 6);
 
     map.on("zoomend", function (e) {
       cambioMapa(e);
     });
 
+    // Pintado Inicial del Mapa (por jsonMapa por Departamentos, y con el idcolorMapa 'DEPA')
+    setTimeout(function(){ jsonMapa = jsonDepartamento; pintarMapa(jsonMapa, idColorMapa)}, 1000);
+    //jsonMapa = jsonDepartamento;
+    //pintarMapa(jsonMapa, idColorMapa);
+
 
     function cambioMapa(e) {
       var zoom = e.target._zoom;
-      var jsonMapa = null;
-      var idColorMapa = null;
+      //console.log('zoom: '+zoom);
+
+      if(zoom < 7){
+        jsonMapa = jsonDepartamento;
+        idColorMapa='DEPA';
+      } else if(zoom < 10){
+        jsonMapa = jsonProvincia;
+        idColorMapa='PROV';
+      } else {
+        jsonMapa = jsonDistrito;
+        idColorMapa='DIST';
+      }
+      /*
       switch (zoom) {
         case ZOOM_DEPARTAMENTO: 
           jsonMapa = jsonDeparmento;
@@ -79,12 +89,23 @@ export class MapaComponent implements OnInit {
           idColorMapa='DIST';
           break;
       }
-      console.log(idColorMapa)
+      */      
+      pintarMapa(jsonMapa, idColorMapa);
 
-      L.geoJSON(jsonMapa, {
+    }
+    var layer: L.Layer = null;
+    function pintarMapa(jsonM, idColor){
+      //console.log('Pinto el mapa con el idColor: '+ idColor+' y con el json:');
+      //console.log(jsonM);
+      if(layer != null){
+        map.removeLayer(layer);
+
+      }
+
+      layer = L.geoJSON(jsonM, {
         style: function (feature) {
           return {
-            fillColor: getColorMapa(feature.properties.COUNT,idColorMapa),
+            fillColor: getColorMapa(feature.properties.COUNT/*101*/, idColor),
             weight: 2,
             opacity: 1,
             color: 'white',
@@ -94,15 +115,19 @@ export class MapaComponent implements OnInit {
         }
 
       }).addTo(map);
-
-
     }
 
     function getColorMapa(param, idColor){
-      return getColorDepartamento(param);
+      switch(idColor){
+        case 'DEPA':
+          return getColorDepartamento(param);
+        case 'PROV':
+          return getColorProvincia(param);
+        case 'DIST':
+          return getColorDistrito(param);
+      }
     }
     
-
     function getColorDepartamento(d) {
       return d > 1000 ? '#800026' :
         d > 500 ? '#BD0026' :
@@ -115,31 +140,32 @@ export class MapaComponent implements OnInit {
     }
 
     function getColorProvincia(d) {
-      return d > 1000 ? '#800026' :
-        d > 500 ? '#BD0026' :
-          d > 200 ? '#E31A1C' :
-            d > 100 ? '#FC4E2A' :
-              d > 50 ? '#FD8D3C' :
-                d > 20 ? '#FEB24C' :
-                  d > 10 ? '#FED976' :
-                    '#FFEDA0';
+      return d > 1000 ? '#08306B' :
+        d > 500 ? '#08519C' :
+          d > 200 ? '#2171B5' :
+            d > 100 ? '#4294C6' :
+              d > 50 ? '#6BAED6' :
+                d > 20 ? '#9ECAE1' :
+                  d > 10 ? '#C6DBEF' :
+                    '#DEEBF7';
     }
 
     function getColorDistrito(d) {
-      return d > 1000 ? '#800026' :
-        d > 500 ? '#BD0026' :
-          d > 200 ? '#E31A1C' :
-            d > 100 ? '#FC4E2A' :
-              d > 50 ? '#FD8D3C' :
-                d > 20 ? '#FEB24C' :
-                  d > 10 ? '#FED976' :
-                    '#FFEDA0';
+      return d > 1000 ? '#00441B' :
+        d > 500 ? '#006D2C' :
+          d > 200 ? '#238B45' :
+            d > 100 ? '#41AB5D' :
+              d > 50 ? '#74C476' :
+                d > 20 ? '#A1D99B' :
+                  d > 10 ? '#C7E9C0' :
+                    '#E5F5E0';
     }
 
   }
 
+  /*
   loadJsonDepartamentos(): any{
-   
+    return this.leafletService.getDepartamentos().subscribe();
   }
 
   loadJsonProvincias(){
@@ -149,20 +175,15 @@ export class MapaComponent implements OnInit {
   loadJsonDistritos(){
     return this.leafletService.getDistritos().subscribe();
   }
+  */
 
   /*
-       for (var i = 0; i < json['features'].length; i++) {
- 
-         json['features'][i]['properties']['fill'] = '#00aa22'
-         json['features'][i]['properties']['fill-opacity'] = 0.5
-         json['features'][i]['properties']['stroke'] = '#00aa22'
-         json['features'][i]['properties']['stroke-width'] = '#00aa22'
-         json['features'][i]['properties']['stroke-opacity'] = '#00aa22'
- 
-         console.log(json['features'][i])
-         
-       }*/
-
-
+  añadirPromedioCalculado(){
+    for (var i = 0; i < json['features'].length; i++) {
+      json['features'][i]['properties']['promedio'] = 500;
+      console.log(json['features'][i]); 
+    }
+  }
+  */
 
 }

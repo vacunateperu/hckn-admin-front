@@ -1,3 +1,11 @@
 .mapa{
     height: 100vh;
 }
+
+::ng-deep{
+    .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar{
+        border: none;
+        -webkit-filter: drop-shadow(3px 3px 5px #0000003a);
+        filter: drop-shadow(3px 3px 5px #0000003a);
+    }
+}
