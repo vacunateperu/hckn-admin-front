@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
+import { EstadisticasService } from 'src/app/services/estadisticas.service';
 import { LeafletService } from 'src/app/services/leaflet.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class MapaComponent implements OnInit {
 
   overlays: any[];
 
-  constructor(private leafletService: LeafletService) { }
+  constructor(private leafletService: LeafletService, private estadisticasService: EstadisticasService) { }
 
   ngOnInit(): void {
   }
@@ -37,15 +38,40 @@ export class MapaComponent implements OnInit {
     var idColorMapa = 'DEPA';
 
     this.leafletService.getDepartamentos().subscribe(data =>{
+      //console.log(data)
+      this.estadisticasService.getPromediosDepartamentos().then(estadistica=>{
+        for (var i = 0; i < data['features'].length; i++) {
+          var  depa = estadistica.find(element => element.id_departamento == data['features'][i]['properties']['FIRST_IDDP']);
+         
+          data['features'][i]['properties']['prom_vulnerabilidad'] = depa == undefined ? 0 : depa.prom_vulnerabilidad;
+        }
+      });
+      console.log(data)
       jsonDepartamento=data;
     });
+
     this.leafletService.getProvincias().subscribe(data =>{
+      this.estadisticasService.getPromediosProvincias().then(estadistica=>{
+        for (var i = 0; i < data['features'].length; i++) {
+          var provi = estadistica.find(element => element.id_provincia == data['features'][i]['properties']['FIRST_IDPR']);
+          data['features'][i]['properties']['prom_vulnerabilidad'] = provi == undefined ? 0 : provi.prom_vulnerabilidad;
+        }
+      });
       jsonProvincia=data;
     });
 
     this.leafletService.getDistritos().subscribe(data =>{
-      jsonDistrito=data;
+      this.estadisticasService.getPromediosDistritos().then(estadistica=>{
+        for (var i = 0; i < data['features'].length; i++) {
+          var dist = estadistica.find(element => element.id_distrito == data['features'][i]['properties']['IDDIST']);
+          data['features'][i]['properties']['prom_vulnerabilidad'] = dist == undefined ? 0 : dist.prom_vulnerabilidad;
+        }
+      });
+          jsonDistrito=data;
     });
+
+
+    
     
     
     map.setView([-9.89, -74.86], 6);
@@ -55,7 +81,7 @@ export class MapaComponent implements OnInit {
     });
 
     // Pintado Inicial del Mapa (por jsonMapa por Departamentos, y con el idcolorMapa 'DEPA')
-    setTimeout(function(){ jsonMapa = jsonDepartamento; pintarMapa(jsonMapa, idColorMapa)}, 1000);
+    setTimeout(function(){ jsonMapa = jsonDepartamento; pintarMapa(jsonMapa, idColorMapa)}, 200);
     //jsonMapa = jsonDepartamento;
     //pintarMapa(jsonMapa, idColorMapa);
 
@@ -99,13 +125,13 @@ export class MapaComponent implements OnInit {
       //console.log(jsonM);
       if(layer != null){
         map.removeLayer(layer);
-
+        console.log('limpia')
       }
 
       layer = L.geoJSON(jsonM, {
         style: function (feature) {
           return {
-            fillColor: getColorMapa(feature.properties.COUNT/*101*/, idColor),
+            fillColor: getColorMapa(feature.properties.prom_vulnerabilidad/*101*/, idColor),
             weight: 2,
             opacity: 1,
             color: 'white',
@@ -129,35 +155,35 @@ export class MapaComponent implements OnInit {
     }
     
     function getColorDepartamento(d) {
-      return d > 1000 ? '#800026' :
-        d > 500 ? '#BD0026' :
-          d > 200 ? '#E31A1C' :
-            d > 100 ? '#FC4E2A' :
-              d > 50 ? '#FD8D3C' :
-                d > 20 ? '#FEB24C' :
-                  d > 10 ? '#FED976' :
+      return d > 0.70 ? '#800026' :
+        d > 0.60 ? '#BD0026' :
+          d > 0.50 ? '#E31A1C' :
+            d > 0.40 ? '#FC4E2A' :
+              d > 0.30 ? '#FD8D3C' :
+                d > 0.20 ? '#FEB24C' :
+                  d > 0.10 ? '#FED976' :
                     '#FFEDA0';
     }
 
     function getColorProvincia(d) {
-      return d > 1000 ? '#08306B' :
-        d > 500 ? '#08519C' :
-          d > 200 ? '#2171B5' :
-            d > 100 ? '#4294C6' :
-              d > 50 ? '#6BAED6' :
-                d > 20 ? '#9ECAE1' :
-                  d > 10 ? '#C6DBEF' :
+      return d > 0.70 ? '#08306B' :
+        d > 0.60 ? '#08519C' :
+          d > 0.50 ? '#2171B5' :
+            d > 0.40 ? '#4294C6' :
+              d > 0.30 ? '#6BAED6' :
+                d > 0.20 ? '#9ECAE1' :
+                  d > 0.10 ? '#C6DBEF' :
                     '#DEEBF7';
     }
 
     function getColorDistrito(d) {
-      return d > 1000 ? '#00441B' :
-        d > 500 ? '#006D2C' :
-          d > 200 ? '#238B45' :
-            d > 100 ? '#41AB5D' :
-              d > 50 ? '#74C476' :
-                d > 20 ? '#A1D99B' :
-                  d > 10 ? '#C7E9C0' :
+      return d > 0.70 ? '#00441B' :
+        d > 0.60 ? '#006D2C' :
+          d > 0.50 ? '#238B45' :
+            d > 0.40 ? '#41AB5D' :
+              d > 0.30 ? '#74C476' :
+                d > 0.20 ? '#A1D99B' :
+                  d > 0.10 ? '#C7E9C0' :
                     '#E5F5E0';
     }
 
