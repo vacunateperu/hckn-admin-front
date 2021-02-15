@@ -81,7 +81,7 @@ export class MapaComponent implements OnInit {
     });
 
     // Pintado Inicial del Mapa (por jsonMapa por Departamentos, y con el idcolorMapa 'DEPA')
-    setTimeout(function(){ jsonMapa = jsonDepartamento; pintarMapa(jsonMapa, idColorMapa)}, 200);
+    setTimeout(function(){ jsonMapa = jsonDepartamento; pintarMapa(jsonMapa, idColorMapa)}, 2000);
     //jsonMapa = jsonDepartamento;
     //pintarMapa(jsonMapa, idColorMapa);
 
