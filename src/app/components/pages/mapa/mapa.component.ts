@@ -88,7 +88,7 @@ export class MapaComponent implements OnInit {
 
     function cambioMapa(e) {
       var zoom = e.target._zoom;
-      //console.log('zoom: '+zoom);
+      console.log('zoom: '+zoom);
 
       if(zoom < 7){
         jsonMapa = jsonDepartamento;
