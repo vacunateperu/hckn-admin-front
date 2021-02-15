@@ -12,21 +12,21 @@ export class EstadisticasService {
   constructor(private http: HttpClient) { }
 
   getPromediosDistritos(): Promise<any[]> {
-    return this.http.get<any>(`${this.url}/promedio_distrito.json`)
+    return this.http.get<any>(`${this.url}/dist`)
     .toPromise()
     .then(res => <any[]>res.data)
     .then(data => { return data; });
   }
 
   getPromediosProvincias(){
-    return this.http.get<any>(`${this.url}/promedio_provincia.json`)
+    return this.http.get<any>(`${this.url}/prov`)
     .toPromise()
     .then(res => <any[]>res.data)
     .then(data => { return data; });
   }
 
   getPromediosDepartamentos(): Promise<any[]>{
-    return this.http.get<any>(`${this.url}/promedio_departamento.json`)
+    return this.http.get<any>(`${this.url}/dept`)
     .toPromise()
     .then(res => <any[]>res.data)
     .then(data => { return data; });
