@@ -1,3 +1,12 @@
+<!--div class="info">
+     <h4>Vulnerabilidad</h4>
+     <div *ngIf="modelo; else texto">
+          <b>{{modelo.nombre}}</b><br/>
+          promedio de personas
+     </div>
+     <ng-template #texto>Seleccione un {{vista}}</ng-template>
+</div-->
+
 <div class="mapa"
      leaflet 
      [leafletOptions]="options"
