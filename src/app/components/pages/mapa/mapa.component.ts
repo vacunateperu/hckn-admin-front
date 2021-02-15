@@ -46,7 +46,6 @@ export class MapaComponent implements OnInit {
           data['features'][i]['properties']['prom_vulnerabilidad'] = depa == undefined ? 0 : depa.prom_vulnerabilidad;
         }
       });
-      console.log(data)
       jsonDepartamento=data;
     });
 
@@ -88,12 +87,12 @@ export class MapaComponent implements OnInit {
 
     function cambioMapa(e) {
       var zoom = e.target._zoom;
-      console.log('zoom: '+zoom);
+      //console.log('zoom: '+zoom);
 
-      if(zoom < 7){
+      if(zoom < 8){
         jsonMapa = jsonDepartamento;
         idColorMapa='DEPA';
-      } else if(zoom < 10){
+      } else if(zoom < 9){
         jsonMapa = jsonProvincia;
         idColorMapa='PROV';
       } else {
