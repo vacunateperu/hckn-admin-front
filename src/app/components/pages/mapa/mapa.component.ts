@@ -125,7 +125,7 @@ export class MapaComponent implements OnInit {
       //console.log(jsonM);
       if(layer != null){
         map.removeLayer(layer);
-        console.log('limpia')
+        //console.log('limpia')
       }
 
       layer = L.geoJSON(jsonM, {

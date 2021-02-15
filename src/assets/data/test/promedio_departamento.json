@@ -1,17 +1,16 @@
 { 
     "data":[
-   {
-    "id_departamento": "02",
-    "prom_vulnerabilidad": 0.754
-  },
-  {
-    "id_departamento": "15",
-    "prom_vulnerabilidad": 0.201
-  },
-  {
-    "id_departamento": "23",
-    "prom_vulnerabilidad": 0.501
-  }
-
-  ]
+      {
+        "id_departamento": "02",
+        "prom_vulnerabilidad": 0.754
+      },
+      {
+        "id_departamento": "15",
+        "prom_vulnerabilidad": 0.201
+      },
+      {
+        "id_departamento": "23",
+        "prom_vulnerabilidad": 0.501
+      }
+    ]
   }
