@@ -36,6 +36,7 @@ export class MapaComponent implements OnInit {
     var jsonDistrito = null;
     var jsonMapa = null;
     var idColorMapa = 'DEPA';
+    var geojson;
 
     this.leafletService.getDepartamentos().subscribe(data =>{
       //console.log(data)
@@ -84,7 +85,6 @@ export class MapaComponent implements OnInit {
     //jsonMapa = jsonDepartamento;
     //pintarMapa(jsonMapa, idColorMapa);
 
-
     function cambioMapa(e) {
       var zoom = e.target._zoom;
       //console.log('zoom: '+zoom);
@@ -118,16 +118,47 @@ export class MapaComponent implements OnInit {
       pintarMapa(jsonMapa, idColorMapa);
 
     }
-    var layer: L.Layer = null;
+
+    function highlightFeature(e) {
+      var layer = e.target;
+  
+      layer.setStyle({
+          weight: 5,
+          color: '#FFF',
+          dashArray: '',
+          fillOpacity: 0.8
+      });
+  
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+          layer.bringToFront();
+      }
+    }
+
+    function resetHighlight(e) {
+      geojson.resetStyle(e.target);
+    }
+
+    function zoomToFeature(e) {
+      map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomToFeature
+      });
+    }
+
     function pintarMapa(jsonM, idColor){
       //console.log('Pinto el mapa con el idColor: '+ idColor+' y con el json:');
       //console.log(jsonM);
-      if(layer != null){
-        map.removeLayer(layer);
+      if(geojson != null){
+        map.removeLayer(geojson);
         //console.log('limpia')
       }
 
-      layer = L.geoJSON(jsonM, {
+      geojson = L.geoJSON(jsonM, {
         style: function (feature) {
           return {
             fillColor: getColorMapa(feature.properties.prom_vulnerabilidad/*101*/, idColor),
@@ -135,10 +166,10 @@ export class MapaComponent implements OnInit {
             opacity: 1,
             color: 'white',
             dashArray: '3',
-            fillOpacity: 0.7
+            fillOpacity: 0.8
           };
-        }
-
+        },
+        onEachFeature: onEachFeature
       }).addTo(map);
     }
 
