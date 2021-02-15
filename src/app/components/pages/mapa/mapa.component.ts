@@ -155,13 +155,13 @@ export class MapaComponent implements OnInit {
     }
     
     function getColorDepartamento(d) {
-      return d > 0.520 ? '#800026' :
-        d > 0.510 ? '#BD0026' :
-          d > 0.500 ? '#E31A1C' :
-            d > 0.495 ? '#FC4E2A' :
-              d > 0.490 ? '#FD8D3C' :
+      return d > 0.505 ? '#800026' :
+        d > 0.501 ? '#BD0026' :
+          d > 0.497 ? '#E31A1C' :
+            d > 0.493 ? '#FC4E2A' :
+              d > 0.489 ? '#FD8D3C' :
                 d > 0.485 ? '#FEB24C' :
-                  d > 0.480 ? '#FED976' :
+                  d > 0.481 ? '#FED976' :
                     '#FFEDA0';
     }
 
