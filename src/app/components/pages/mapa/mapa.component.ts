@@ -155,35 +155,35 @@ export class MapaComponent implements OnInit {
     }
     
     function getColorDepartamento(d) {
-      return d > 0.70 ? '#800026' :
-        d > 0.60 ? '#BD0026' :
+      return d > 0.60 ? '#800026' :
+        d > 0.55 ? '#BD0026' :
           d > 0.50 ? '#E31A1C' :
-            d > 0.40 ? '#FC4E2A' :
-              d > 0.30 ? '#FD8D3C' :
-                d > 0.20 ? '#FEB24C' :
-                  d > 0.10 ? '#FED976' :
+            d > 0.45 ? '#FC4E2A' :
+              d > 0.40 ? '#FD8D3C' :
+                d > 0.35 ? '#FEB24C' :
+                  d > 0.30 ? '#FED976' :
                     '#FFEDA0';
     }
 
     function getColorProvincia(d) {
-      return d > 0.70 ? '#08306B' :
-        d > 0.60 ? '#08519C' :
+      return d > 0.60 ? '#08306B' :
+        d > 0.55 ? '#08519C' :
           d > 0.50 ? '#2171B5' :
-            d > 0.40 ? '#4294C6' :
-              d > 0.30 ? '#6BAED6' :
-                d > 0.20 ? '#9ECAE1' :
-                  d > 0.10 ? '#C6DBEF' :
+            d > 0.45 ? '#4294C6' :
+              d > 0.40 ? '#6BAED6' :
+                d > 0.35 ? '#9ECAE1' :
+                  d > 0.30 ? '#C6DBEF' :
                     '#DEEBF7';
     }
 
     function getColorDistrito(d) {
-      return d > 0.70 ? '#00441B' :
-        d > 0.60 ? '#006D2C' :
+      return d > 0.60 ? '#00441B' :
+        d > 0.55 ? '#006D2C' :
           d > 0.50 ? '#238B45' :
-            d > 0.40 ? '#41AB5D' :
-              d > 0.30 ? '#74C476' :
-                d > 0.20 ? '#A1D99B' :
-                  d > 0.10 ? '#C7E9C0' :
+            d > 0.45 ? '#41AB5D' :
+              d > 0.40 ? '#74C476' :
+                d > 0.35 ? '#A1D99B' :
+                  d > 0.30 ? '#C7E9C0' :
                     '#E5F5E0';
     }
 
