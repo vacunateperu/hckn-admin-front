@@ -5,10 +5,23 @@
           promedio de personas
      </div>
      <ng-template #texto>Seleccione un {{vista}}</ng-template>
+
+
+
+
+
+
+     
+     [leafletOptions]="options"
+     (leafletMapReady)="onMapReady($event)"
+
+
+
+
+
+
+
 </div-->
 
-<div class="mapa"
-     leaflet 
-     [leafletOptions]="options"
-     (leafletMapReady)="onMapReady($event)">
-</div>
+<div class="mapa" id="vulnerableMapa"  ></div>
+

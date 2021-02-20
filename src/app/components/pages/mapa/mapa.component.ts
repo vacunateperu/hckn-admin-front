@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import * as L from 'leaflet';
+import 'leaflet';
 import { EstadisticasService } from 'src/app/services/estadisticas.service';
 import { LeafletService } from 'src/app/services/leaflet.service';
+
+declare let L;
+
 
 @Component({
   selector: 'app-mapa',
@@ -10,150 +13,188 @@ import { LeafletService } from 'src/app/services/leaflet.service';
 })
 export class MapaComponent implements OnInit {
 
-  options = {
-    layers: [
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '...'
-      })
-    ],
-    zoom: 7,
-    center: L.latLng(47.482019, -1)
-  };
-
-  vista = 'departamento';
-
-
-  overlays: any[];
-
   constructor(private leafletService: LeafletService, private estadisticasService: EstadisticasService) { }
 
   ngOnInit(): void {
-  }
 
-  onMapReady(map: L.Map) {
-    
-    var jsonDepartamento = null;
-    var jsonProvincia = null;
-    var jsonDistrito = null;
-    var jsonMapa = null;
-    var idColorMapa = 'DEPA';
-    var geojson;
+    let miMapa;
 
-    this.leafletService.getDepartamentos().subscribe(data =>{
-      //console.log(data)
-      this.estadisticasService.getPromediosDepartamentos().then(estadistica=>{
+    let geojson_master;
+    let geojson_distrito;
+    let geojson_provincia;
+    let geojson_departamento;
+    let geojson_layer;
+
+    let idColorMapa = 'DEPA';
+
+    /************************************************************
+                          CARGA DATA GEOJSON
+    *************************************************************/
+
+    this.leafletService.getDepartamentos().subscribe(data => {
+
+      this.estadisticasService.getPromediosDepartamentos().then(estadistica => {
         for (var i = 0; i < data['features'].length; i++) {
-          var  depa = estadistica.find(element => element.id_departamento == data['features'][i]['properties']['FIRST_IDDP']);
-         
+          var depa = estadistica.find(element => element.id_departamento == data['features'][i]['properties']['FIRST_IDDP']);
+
           data['features'][i]['properties']['prom_vulnerabilidad'] = depa == undefined ? 0 : depa.prom_vulnerabilidad;
         }
       });
-      jsonDepartamento=data;
+      geojson_departamento = data;
     });
 
-    this.leafletService.getProvincias().subscribe(data =>{
-      this.estadisticasService.getPromediosProvincias().then(estadistica=>{
+    this.leafletService.getProvincias().subscribe(data => {
+      this.estadisticasService.getPromediosProvincias().then(estadistica => {
         for (var i = 0; i < data['features'].length; i++) {
           var provi = estadistica.find(element => element.id_provincia == data['features'][i]['properties']['FIRST_IDPR']);
           data['features'][i]['properties']['prom_vulnerabilidad'] = provi == undefined ? 0 : provi.prom_vulnerabilidad;
         }
       });
-      jsonProvincia=data;
+      geojson_provincia = data;
     });
 
-    this.leafletService.getDistritos().subscribe(data =>{
-      this.estadisticasService.getPromediosDistritos().then(estadistica=>{
+    this.leafletService.getDistritos().subscribe(data => {
+      this.estadisticasService.getPromediosDistritos().then(estadistica => {
         for (var i = 0; i < data['features'].length; i++) {
           var dist = estadistica.find(element => element.id_distrito == data['features'][i]['properties']['IDDIST']);
           data['features'][i]['properties']['prom_vulnerabilidad'] = dist == undefined ? 0 : dist.prom_vulnerabilidad;
         }
       });
-          jsonDistrito=data;
-    });
-    
-    map.setView([-9.89, -74.86], 6);
-
-    map.on("zoomend", function (e) {
-      cambioMapa(e);
+      geojson_distrito = data;
     });
 
-    // Pintado Inicial del Mapa (por jsonMapa por Departamentos, y con el idcolorMapa 'DEPA')
-    setTimeout(function(){ jsonMapa = jsonDepartamento; pintarMapa(jsonMapa, idColorMapa)}, 2000);
-    //jsonMapa = jsonDepartamento;
-    //pintarMapa(jsonMapa, idColorMapa);
+    /************************************************************
+                              LAYERS
+    *************************************************************/
+    miMapa = L.map('vulnerableMapa')
+      .setView([-9.89, -74.86], 6)
+      .on("zoomend", function (e) {
+        cambioMapa(e);
+      });
 
-    /*
-    var info = L.control();
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+      .addTo(miMapa);
 
-    info.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-        this.update();
-        return this._div;
+    //PINTADO INICIAL
+    setTimeout(function () {
+      geojson_master = geojson_departamento;
+      pintarMapa(idColorMapa);
+    }, 3000);
+
+
+    //INFORMACION NOMBRE Y PORCENTAJE
+
+    let info;
+
+    info = new L.Control();
+
+    info.onAdd = function () {
+      this._div = L.DomUtil.create('div', 'info-mapa');
+      this.update();
+      return this._div;
     };
 
-    // method that we will use to update the control based on feature properties passed
     info.update = function (props) {
-        this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-            '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-            : 'Hover over a state');
+      var nombre_area;
+      if (props) {
+        if (props.NOMBDIST != undefined) {
+          nombre_area = props.NOMBDIST;
+        } else if (props.NOMBPROV != undefined) {
+          nombre_area = props.NOMBPROV;
+        } else {
+          nombre_area = props.NOMBDEP;
+        }
+      }
+
+      this._div.innerHTML =
+        '<h4>Cantidad de vulnerables</h4>' +
+        (props ? '<b>' + nombre_area + '</b>' + getPorcentaje(props.prom_vulnerabilidad) + '%.' : 'Pasa el mouse');
     };
 
-    info.addTo(map);
-    */
+    info.addTo(miMapa);
 
-    function cambioMapa(e) {
-      var zoom = e.target._zoom;
-      //console.log('zoom: '+zoom);
+    //LEYENDA FOOTER
+    var legend = L.control({ position: 'bottomleft' });
 
-      if(zoom < 8){
-        jsonMapa = jsonDepartamento;
-        idColorMapa='DEPA';
-      } else if(zoom < 9){
-        jsonMapa = jsonProvincia;
-        idColorMapa='PROV';
-      } else {
-        jsonMapa = jsonDistrito;
-        idColorMapa='DIST';
-      }    
-      pintarMapa(jsonMapa, idColorMapa);
+    legend.onAdd = function (map) {
+
+      var div = L.DomUtil.create('div', 'info-mapa legend'),
+        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        labels = [];
+
+      // loop through our density intervals and generate a label with a colored square for each interval
+   
+        div.innerHTML =
+          'Vulnerabilidad acumulada'+
+          '<i style="background-color: red"></i> ' +
+         '<br>';
+    
+
+      return div;
+    };
+
+    legend.addTo(miMapa);
+
+
+    /************************************************************
+                              FUNCIONES LEAFLET
+    *************************************************************/
+
+    function resetHighlight(e) {
+      geojson_layer.resetStyle(e.target);
+      info.update();
     }
 
     function highlightFeature(e) {
-      var layer = e.target;
-  
-      layer.setStyle({
-          weight: 5,
-          color: '#FFF',
-          dashArray: '',
-          fillOpacity: 0.8
-      });
-  
-      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-          layer.bringToFront();
-      }
-    }
+      const layer = e.target;
 
-    function resetHighlight(e) {
-      geojson.resetStyle(e.target);
+      layer.setStyle({
+        weight: 5,
+        color: '#FFF',
+        dashArray: '',
+        fillOpacity: 0.8
+      });
+
+      if (!L.Browser.ie && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+
+      info.update(layer.feature.properties);
     }
 
     function onEachFeature(feature, layer) {
       layer.on({
-          mouseover: highlightFeature,
-          mouseout: resetHighlight
+        mouseover: highlightFeature,
+        mouseout: resetHighlight
       });
     }
 
-    function pintarMapa(jsonM, idColor){
-      //console.log('Pinto el mapa con el idColor: '+ idColor+' y con el json:');
-      //console.log(jsonM);
-      if(geojson != null){
-        map.removeLayer(geojson);
-        //console.log('limpia')
+
+    /************************************************************
+                         FUNCIONES PROPIAS
+    *************************************************************/
+    function cambioMapa(e) {
+      var zoom = e.target._zoom;
+      if (zoom < 8) {
+        geojson_master = geojson_departamento;
+        idColorMapa = 'DEPA';
+      } else if (zoom < 9) {
+        geojson_master = geojson_provincia;
+        idColorMapa = 'PROV';
+      } else {
+        geojson_master = geojson_distrito;
+        idColorMapa = 'DIST';
+      }
+      pintarMapa(idColorMapa);
+    }
+
+    function pintarMapa(idColor) {
+
+      if (geojson_layer != null) {
+        miMapa.removeLayer(geojson_layer);
       }
 
-      geojson = L.geoJSON(jsonM, {
+      geojson_layer = L.geoJSON(geojson_master, {
         style: function (feature) {
           return {
             fillColor: getColorMapa(feature.properties.prom_vulnerabilidad/*101*/, idColor),
@@ -165,11 +206,12 @@ export class MapaComponent implements OnInit {
           };
         },
         onEachFeature: onEachFeature
-      }).addTo(map);
+      }).addTo(miMapa);
     }
 
-    function getColorMapa(param, idColor){
-      switch(idColor){
+
+    function getColorMapa(param, idColor) {
+      switch (idColor) {
         case 'DEPA':
           return getColorDepartamento(param);
         case 'PROV':
@@ -178,63 +220,52 @@ export class MapaComponent implements OnInit {
           return getColorDistrito(param);
       }
     }
-    
+
+    function getPorcentaje(num) {
+      return (num * 100).toFixed(2);
+    }
+
+
     function getColorDepartamento(d) {
-      return d > 0.505 ? '#800026' :
-        d > 0.501 ? '#BD0026' :
-          d > 0.497 ? '#E31A1C' :
-            d > 0.493 ? '#FC4E2A' :
-              d > 0.489 ? '#FD8D3C' :
-                d > 0.485 ? '#FEB24C' :
-                  d > 0.481 ? '#FED976' :
+      return d > 0.45 ? '#800026' :
+        d > 0.394 ? '#BD0026' :
+          d > 0.338 ? '#E31A1C' :
+            d > 0.282 ? '#FC4E2A' :
+              d > 0.226 ? '#FD8D3C' :
+                d > 0.17 ? '#FEB24C' :
+                  d > 0.114 ? '#FED976' :
                     '#FFEDA0';
     }
 
     function getColorProvincia(d) {
-      return d > 0.60 ? '#08306B' :
-        d > 0.50 ? '#08519C' :
-          d > 0.48 ? '#2171B5' :
-            d > 0.46 ? '#4294C6' :
-              d > 0.44 ? '#6BAED6' :
-                d > 0.42 ? '#9ECAE1' :
-                  d > 0.40 ? '#C6DBEF' :
+      return d > 0.45 ? '#08306B' :
+        d > 0.394 ? '#08519C' :
+          d > 0.338 ? '#2171B5' :
+            d > 0.282 ? '#4294C6' :
+              d > 0.226 ? '#6BAED6' :
+                d > 0.17 ? '#9ECAE1' :
+                  d > 0.114 ? '#C6DBEF' :
                     '#DEEBF7';
     }
 
     function getColorDistrito(d) {
-      return d > 0.60 ? '#00441B' :
-        d > 0.50 ? '#006D2C' :
-          d > 0.48 ? '#238B45' :
-            d > 0.46 ? '#41AB5D' :
-              d > 0.44 ? '#74C476' :
-                d > 0.42 ? '#A1D99B' :
-                  d > 0.40 ? '#C7E9C0' :
+      return d > 0.45 ? '#00441B' :
+        d > 0.394 ? '#006D2C' :
+          d > 0.338 ? '#238B45' :
+            d > 0.282 ? '#41AB5D' :
+              d > 0.226 ? '#74C476' :
+                d > 0.17 ? '#A1D99B' :
+                  d > 0.114 ? '#C7E9C0' :
                     '#E5F5E0';
     }
 
+
+
+
   }
 
-  /*
-  loadJsonDepartamentos(): any{
-    return this.leafletService.getDepartamentos().subscribe();
-  }
 
-  loadJsonProvincias(){
-    return this.leafletService.getProvincias().subscribe();
-  }
 
-  loadJsonDistritos(){
-    return this.leafletService.getDistritos().subscribe();
-  }
-  */
 
-  /*
-  añadirPromedioCalculado(){
-    for (var i = 0; i < json['features'].length; i++) {
-      json['features'][i]['properties']['promedio'] = 500;
-      console.log(json['features'][i]); 
-    }
-  }
-  */
 
 }
