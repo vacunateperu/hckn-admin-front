@@ -1,3 +1,9 @@
+
+$fondoMapaBtn: var(--fondo-mapa-btn);
+$textoMapaBtn: var(--texto-mapa-btn);
+$fondoGraficosBtn: var(--fondo-graficos-btn);
+$textGraficosBtn: var(--texto-graficos-btn);
+
 .botones{
     position: absolute;
     z-index: 1000;
@@ -9,4 +15,34 @@
 .mapa,.graficos{
     margin-left: 25px;
     margin-right: 25px;
+}
+
+::ng-deep{
+    .mapa{
+        .p-button{
+            background-color: $fondoMapaBtn;
+            border: none;
+            color: $textoMapaBtn;
+        }
+
+        .p-button:hover{
+            background-color: #6C8492;
+            border: none;
+            color: white;
+        }
+    }
+
+    .graficos{
+        .p-button{
+            background-color: $fondoGraficosBtn;
+            border: none;
+            color: $textGraficosBtn;
+        }
+
+        .p-button:hover{
+            background-color: #6C8492;
+            border: none;
+            color: white;
+        }
+    }
 }

@@ -1,5 +1,5 @@
 <div class="botones">
-    <p-button class="mapa" icon="pi pi-iconName" label="Mapa"></p-button>
-    <p-button class="graficos" icon="pi pi-iconName" label="Gráficos"></p-button>
+    <p-button class="mapa" label="Mapa" routerLink="mapa" (click)="seleccionMapa()"></p-button>
+    <p-button class="graficos" label="Gráficos" routerLink="graficos" (click)="seleccionGraficos()"></p-button>
 </div>
 <router-outlet></router-outlet>
