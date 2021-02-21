@@ -122,12 +122,12 @@ export class MapaComponent implements OnInit {
         grades = [0, 10, 20, 50, 100, 200, 500, 1000],
         labels = [];
 
-      // loop through our density intervals and generate a label with a colored square for each interval
+      // loop through our density intervals and genera  te a label with a colored square for each interval
    
         div.innerHTML =
           'Vulnerabilidad acumulada'+
           '<i style="background-color: red"></i> ' +
-         '<br>';
+         '<br>';  
     
 
       return div;
@@ -258,14 +258,5 @@ export class MapaComponent implements OnInit {
                   d > 0.114 ? '#C7E9C0' :
                     '#E5F5E0';
     }
-
-
-
-
   }
-
-
-
-
-
 }
