@@ -197,6 +197,7 @@ export class MapaComponent implements OnInit {
         lugarSegunElZoom = 'un distrito';
       }
       pintarMapa(idColorMapa);
+      info.update();
     }
 
     function pintarMapa(idColor) {
