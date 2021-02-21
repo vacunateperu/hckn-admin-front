@@ -25,6 +25,8 @@ export class MapaComponent implements OnInit {
     let geojson_departamento;
     let geojson_layer;
 
+    let lugarSegunElZoom: string = 'un departamento';
+
     let idColorMapa = 'DEPA';
 
     /************************************************************
@@ -108,7 +110,7 @@ export class MapaComponent implements OnInit {
 
       this._div.innerHTML =
         '<h4>Cantidad de vulnerables</h4>' +
-        (props ? '<b>' + nombre_area + '</b>' + getPorcentaje(props.prom_vulnerabilidad) + '%.' : 'Pasa el mouse');
+        (props ? '<b>' + nombre_area + '</b><br/>' + getPorcentaje(props.prom_vulnerabilidad) + '%.' : 'Seleccione '+ lugarSegunElZoom);
     };
 
     info.addTo(miMapa);
@@ -178,12 +180,15 @@ export class MapaComponent implements OnInit {
       if (zoom < 8) {
         geojson_master = geojson_departamento;
         idColorMapa = 'DEPA';
+        lugarSegunElZoom = 'un departamento';
       } else if (zoom < 9) {
         geojson_master = geojson_provincia;
         idColorMapa = 'PROV';
+        lugarSegunElZoom = 'una provincia';
       } else {
         geojson_master = geojson_distrito;
         idColorMapa = 'DIST';
+        lugarSegunElZoom = 'un distrito';
       }
       pintarMapa(idColorMapa);
     }
