@@ -33,7 +33,7 @@ export class MapaComponent implements OnInit {
 
 
     let rangoMin = 0.0;
-    let rangoMax = 0.6;
+    let rangoMax = 0.6; 
 
     /************************************************************
                           CARGA DATA GEOJSON
