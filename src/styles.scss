@@ -19,7 +19,7 @@ body{
 
 .legend {
     line-height: 18px;
-    color: #555;
+    color: #444;
 }
 .legend i {
     width: 18px;
@@ -27,4 +27,35 @@ body{
     float: left;
     margin-right: 8px;
     opacity: 0.7;
+}
+
+.espacio{
+    width: 100%;
+    height: 3px;
+}
+
+.dept,.prov,.dist,.text{
+    width: 150px;
+    height: 20px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.dept,.prov,.dist{
+    margin: 4px 0px;
+}
+
+.dept{
+    background-color: #fff7ec;
+    background-image: linear-gradient(to right,#ffeacd, #ffe8c8, #ffe6c4, #ffe4bf, #ffe2bb, #ffdfb6, #ffddb2, #ffdbae, #ffd9aa, #ffd6a6, #ffd4a2, #ffd29e, #ffcf9a, #ffcd96, #ffcb93, #ffc88f, #ffc68b, #ffc388, #ffc185, #ffbf81, #ffbc7e, #ffba7b, #ffb778, #ffb574, #ffb271, #ffaf6e, #ffad6b, #ffaa68, #ffa866, #ffa563, #ffa260, #ffa05d, #ff9d5b, #ff9a58, #ff9755, #ff9553, #ff9250, #ff8f4e, #ff8c4b, #ff8949, #ff8647, #ff8345, #fe8143, #fd7e41, #fc7b40, #fb793e, #fb763c, #fa743b, #f97139, #f86e37, #f76c36, #f66934, #f56733, #f46431, #f3622f, #f15f2e, #f05c2c, #ef5a2b, #ee5729, #ec5528, #eb5226, #ea4f25, #e84d23, #e74a22, #e64820, #e4451f, #e3421e, #e1401c, #df3d1b, #de3a19, #dc3818, #da3517, #d93315, #d73014, #d52d13, #d32b11, #d12810, #cf250f, #ce230e, #cc200c, #c91d0b, #c71a0a, #c51809, #c31507, #c11206, #be0f06, #bc0c05, #ba0904, #b70703, #b50502, #b20302, #b00101, #ad0101, #aa0000);
+}
+
+.prov{
+    background-color: #fff7fb;
+    background-image: linear-gradient(to right, #eae8fb, #e6e5fb, #e2e3fa, #dee1fa, #dadefa, #d6dcf9, #d2daf9, #cdd8f8, #c9d5f8, #c5d3f7, #c0d1f7, #bbcff6, #b6cdf5, #b2cbf5, #adc9f4, #a7c7f3, #a2c5f2, #9dc3f1, #97c1f1, #91bff0, #8bbdef, #85bbee, #7fb9ed, #79b7ec, #72b5eb, #6ab3e9, #63b1e8, #5aafe7, #51aee6, #48ace5, #47a9e3, #45a6e2, #43a4e0, #41a1df, #3f9edd, #3e9cdb, #3c99da, #3a97d8, #3994d6, #3791d4, #358fd2, #348cd0, #328ace, #3187cc, #2f85ca, #2e82c8, #2c7fc6, #2b7dc4, #2a7ac1, #2878bf, #2776bd, #2673bb, #2471b8, #236eb6, #226cb4, #2169b1, #1f67af, #1e64ad, #1d62aa, #1c60a8, #1b5da5, #1a5ba3, #1859a1, #17569e, #16549c, #155299, #144f97, #134d94, #124b92, #11488f, #10468d, #0f448a, #0e4188, #0d3f85, #0c3d83, #0c3b80, #0b397d, #0a367b, #093478, #083276, #073073, #062e71, #062c6e, #05296b, #042769, #042566, #032364, #032161, #021f5f, #021d5c, #011b59, #011957, #001754, #001552);
+}
+
+.dist{
+    background-color: #f7fcf5;
+    background-image: linear-gradient(to right, #d8f4d3, #d3f2ce, #cff1c8, #caefc3, #c5eebf, #c0ecba, #bbebb5, #b6e9b0, #b2e7ac, #ade6a7, #a8e4a3, #a4e29f, #9fe09a, #9adf96, #95dd92, #91db8e, #8cd98a, #87d786, #82d582, #7ed47e, #79d27a, #74d076, #6fce72, #6acc6e, #65ca6b, #5fc867, #5cc665, #5ac463, #57c161, #54bf5f, #52bd5d, #50ba5b, #4db85a, #4bb658, #48b356, #46b154, #44af53, #42ac51, #40aa4f, #3da84e, #3ba54c, #39a34a, #37a149, #359e47, #339c45, #319a44, #2f9842, #2d9541, #2b933f, #2a913d, #288e3c, #268c3a, #248a39, #228737, #218536, #1f8334, #1d8133, #1c7e31, #1a7c30, #197a2e, #17782d, #15752c, #14732a, #127129, #116f27, #0f6c26, #0e6a25, #0c6823, #0b6622, #0a6421, #08611f, #075f1e, #065d1d, #055b1b, #04591a, #035619, #025417, #025216, #015015, #014e14, #004c12, #004a11, #004810, #00450f, #00430d, #00410c, #003f0b, #003d09, #003b08, #003906, #003705, #003503, #003302, #003100);
 }
