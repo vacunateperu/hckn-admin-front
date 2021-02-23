@@ -1,4 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NgModule } from '@angular/core';
 
 import { PrimengModule } from './primeng/primeng.module';
@@ -16,6 +19,7 @@ import { GraficoTablaComponent } from './components/pages/graficos/grafico-tabla
 //LEAFLET FOR MAPS
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
+import { FormsModule }   from '@angular/forms';
 
 
 @NgModule({
@@ -32,7 +36,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     AppRoutingModule,
     PrimengModule,
     LeafletModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

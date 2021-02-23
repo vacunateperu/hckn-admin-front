@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Autocomplete } from '../models/autocomplete';
 import { HOST_BACKEND, HOST_GEOJSON } from '../shared/var.constant';
 
 @Injectable({
@@ -31,21 +32,20 @@ export class EstadisticasService {
     .then(res => <any[]>res.data)
     .then(data => { return data; });
   }
-
-
-  getDepartamentosNombres(){
+  
+  getDepartamentosNombres(): Promise<Autocomplete[]>{
     return this.http.get(`${HOST_GEOJSON}/departamental.geojson`)
     .toPromise()
     .then(res => res['features'])
     .then(data => {
-      return data.map(item =>({
+      return <Autocomplete[]> data.map(item =>({
         nombre: item.properties.NOMBDEP,
         id: item.properties.FIRST_IDDP
       }));
     });
   }
 
-  getProvinciasNombresPorDepartamentoId(idDepartamento: string){
+  getProvinciasNombresPorDepartamentoId(idDepartamento: string):  Promise<Autocomplete[]>{
     return this.http.get(`${HOST_GEOJSON}/provincial.geojson`)
     .toPromise()
     .then(res => res['features'])
@@ -57,14 +57,14 @@ export class EstadisticasService {
       }
     )
     .then(data => {
-      return data.map(item =>({
+      return <Autocomplete[]> data.map(item =>({
         nombre: item.properties.NOMBPROV,
         id: item.properties.FIRST_IDPR
       }));
     })
   } 
 
-  getDistritosNombresPorProvinciaId(idProvincia: string){
+  getDistritosNombresPorProvinciaId(idProvincia: string): Promise<Autocomplete[]>{
     return this.http.get(`${HOST_GEOJSON}/distrital.geojson`)
     .toPromise()
     .then(res => res['features'])
@@ -74,7 +74,7 @@ export class EstadisticasService {
         })
     })
     .then(data => {
-      return data.map(item =>({
+      return <Autocomplete[]> data.map(item =>({
         nombre: item.properties.NOMBDIST,
         id: item.properties.IDDIST
       }));
@@ -85,4 +85,23 @@ export class EstadisticasService {
     
   }
 
+
+/*
+  filterDepartamentosByNombre(nombre: string): Promise<Autocomplete[]>{
+    return this.http.get(`${HOST_GEOJSON}/departamental.geojson`)
+    .toPromise()
+    .then(res => res['features'])
+    .then(res => {
+      return res.filter(item => {
+         return item.properties.NOMBDEP.includes(nombre);
+       })
+   })
+    .then(data => {
+      return <Autocomplete[]> data.map(item =>({
+        nombre: item.properties.NOMBDEP,
+        id: item.properties.FIRST_IDDP
+      }));
+    });
+  }
+*/
 }
