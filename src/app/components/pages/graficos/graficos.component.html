@@ -1,1 +1,4 @@
-<p>graficos works!</p>
+
+<div class="dropdowns">
+    <p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)"></p-autoComplete>
+</div>

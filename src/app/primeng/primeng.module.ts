@@ -7,6 +7,7 @@ import {GMapModule} from 'primeng/gmap';
 import {ChartModule} from 'primeng/chart';
 import {ButtonModule} from 'primeng/button';
 import {TabViewModule} from 'primeng/tabview';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {TabViewModule} from 'primeng/tabview';
     GMapModule,
     ChartModule,
     ButtonModule,
-    TabViewModule
+    TabViewModule,
+    AutoCompleteModule
     
   ],
   exports: [
@@ -25,7 +27,8 @@ import {TabViewModule} from 'primeng/tabview';
     GMapModule,
     ChartModule,
     ButtonModule,
-    TabViewModule
+    TabViewModule,
+    AutoCompleteModule
   ]
 })
 export class PrimengModule { }
