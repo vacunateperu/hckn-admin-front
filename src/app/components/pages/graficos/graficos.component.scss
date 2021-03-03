@@ -1,3 +1,26 @@
+
 .dropdowns{
-    padding-top: 100px;
+    text-align: center;
+    width: 100%;
+    padding-top: 120px;
+}
+
+.deptDD,.provDD,.distDD,.home-btn{
+    margin: 0px 10px;
+}
+
+::ng-deep{
+    .dropdowns{
+        .p-button{
+            background-color: #444;
+            border: none;
+            color: white;
+        }
+
+        .p-button:hover{
+            background-color: #6C8492;
+            border: none;
+            color: white;
+        }
+    }
 }

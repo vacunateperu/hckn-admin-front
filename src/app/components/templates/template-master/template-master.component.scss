@@ -3,13 +3,16 @@ $fondoMapaBtn: var(--fondo-mapa-btn);
 $textoMapaBtn: var(--texto-mapa-btn);
 $fondoGraficosBtn: var(--fondo-graficos-btn);
 $textGraficosBtn: var(--texto-graficos-btn);
+$fondoBarra: var(--fondo-barra);
 
 .botones{
+    background-color: $fondoBarra;
     position: absolute;
     z-index: 1000;
     width: 100%;
     text-align: center;
     padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .mapa,.graficos{

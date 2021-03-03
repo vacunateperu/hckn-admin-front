@@ -33,6 +33,10 @@ export class GraficosComponent implements OnInit {
     });
   }
 
+  todosLosDepartamentos(){
+    
+  }
+
   busquedaDepartamento(event) {
     let query = event.query;
     this.resetDropProvincias();
