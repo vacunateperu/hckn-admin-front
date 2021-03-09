@@ -1,1 +1,23 @@
-<p>grafico-tabla works!</p>
+
+<div class="card">
+    <p-table [value]="dataTable">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th pSortableColumn="poblacionReg">Población Registrada <p-sortIcon field="poblacionReg"></p-sortIcon></th>
+                <th pSortableColumn="hombresVul">Hombres Vulnerables <p-sortIcon field="hombresVul"></p-sortIcon></th>
+                <th pSortableColumn="mujeresVul">Mujeres Vulnerables <p-sortIcon field="mujeresVul"></p-sortIcon></th>
+                <th pSortableColumn="promVul">Total Vulnerables <p-sortIcon field="promVul"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+            <tr>
+                <td>{{data.nombre}}</td>
+                <td>{{data.poblacionReg}}</td>
+                <td>{{data.hombresVul}}</td>
+                <td>{{data.mujeresVul}}</td>
+                <td>{{data.promVul}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

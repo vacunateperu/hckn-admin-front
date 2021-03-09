@@ -43,6 +43,10 @@ export class GraficosComponent implements OnInit {
     this.comunicacionGraficosService.seleccionarLugar(pais);
   }
 
+  todosLosDepartamentos(){
+    
+  }
+
   busquedaDepartamento(event) {
     let query = event.query;
     this.resetDropProvincias();

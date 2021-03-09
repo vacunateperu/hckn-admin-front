@@ -21,11 +21,13 @@ export class TemplateMasterComponent implements OnInit {
 
   evaluaSeleccion(){
     if(this.selected == 'Mapa'){
+      document.documentElement.style.setProperty('--fondo-barra', 'none');
       document.documentElement.style.setProperty('--fondo-mapa-btn', '#444');
       document.documentElement.style.setProperty('--texto-mapa-btn', 'white');
       document.documentElement.style.setProperty('--fondo-graficos-btn', 'white');
       document.documentElement.style.setProperty('--texto-graficos-btn', 'gray');
     } else {
+      document.documentElement.style.setProperty('--fondo-barra', 'lightgray');
       document.documentElement.style.setProperty('--fondo-mapa-btn', 'white');
       document.documentElement.style.setProperty('--texto-mapa-btn', 'gray');
       document.documentElement.style.setProperty('--fondo-graficos-btn', '#444');

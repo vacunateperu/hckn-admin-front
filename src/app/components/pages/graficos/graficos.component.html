@@ -1,10 +1,12 @@
-
+    
 <div class="dropdowns">
+    <p-button class="home-btn" icon="pi pi-home" (click)="todosLosDepartamentos()"></p-button>
+
     <p-autoComplete [(ngModel)]="autocompleteDepartamento" [suggestions]="filtradoDepartamentos"  (completeMethod)="busquedaDepartamento($event)" 
-    field="nombre" [dropdown]="true" placeholder="Buscar departamento" [minLength]="1" (onSelect)="seleccionDepartamento($event)" (onClear)="resetDropProvincias()"></p-autoComplete>
+    field="nombre" [dropdown]="true" placeholder="Buscar departamento" class="deptDD" [minLength]="1" (onSelect)="seleccionDepartamento($event)" (onClear)="resetDropProvincias()"></p-autoComplete>
 
     <p-autoComplete [(ngModel)]="autocompleteProvincia" [suggestions]="filtradoProvincias"  (completeMethod)="busquedaProvincia($event)" 
-    field="nombre" [dropdown]="true" placeholder="Buscar provincia" [minLength]="1" (onSelect)="seleccionProvincia($event)" (onClear)="resetDropDistritos()" [disabled]="disabledProvincias"></p-autoComplete>
+    field="nombre" [dropdown]="true" placeholder="Buscar provincia" class="provDD" [minLength]="1" (onSelect)="seleccionProvincia($event)" (onClear)="resetDropDistritos()" [disabled]="disabledProvincias"></p-autoComplete>
 
     <p-autoComplete [(ngModel)]="autocompleteDistrito" [suggestions]="filtradoDistritos"  (completeMethod)="busquedaDistrito($event)" 
     field="nombre" [dropdown]="true" placeholder="Buscar distrito" [minLength]="1" [disabled]="disabledDistritos" (onSelect)="seleccionDistrito($event)"></p-autoComplete>
@@ -12,6 +14,6 @@
 
 </div>
 
-
 <app-grafico-barra></app-grafico-barra>
-    <app-grafico-tabla></app-grafico-tabla>
+<app-grafico-tabla></app-grafico-tabla>
+
