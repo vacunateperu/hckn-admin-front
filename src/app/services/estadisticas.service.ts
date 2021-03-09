@@ -103,6 +103,28 @@ export class EstadisticasService {
     .then(data => { return data; });  
   }
 
+  getTablaPromediosDepartamentos(){
+    return this.http.get<any>(`${this.url}/tablaDept`)
+    .toPromise()
+    .then(res => <any[]>res.data)
+    .then(data => { return data; });
+  }
+
+  getTablaPromediosProvinciasByDepartamentoId(id_departamento: string){
+    return this.http.get<any>(`${this.url}/tablaProv/${id_departamento}`)
+    .toPromise()
+    .then(res => <any[]>res.data)
+    .then(data => { return data; });
+  }
+
+  getTablaPromediosDistritosByProvinciaId(id_provincia: string){
+    return this.http.get<any>(`${this.url}/tablaDist/${id_provincia}`)
+    .toPromise()
+    .then(res => <any[]>res.data)
+    .then(data => { return data; });
+  }
+
+
 
 /*
   filterDepartamentosByNombre(nombre: string): Promise<Autocomplete[]>{
