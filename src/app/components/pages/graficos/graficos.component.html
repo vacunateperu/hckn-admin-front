@@ -7,7 +7,7 @@
     field="nombre" [dropdown]="true" placeholder="Buscar provincia" [minLength]="1" (onSelect)="seleccionProvincia($event)" (onClear)="resetDropDistritos()" [disabled]="disabledProvincias"></p-autoComplete>
 
     <p-autoComplete [(ngModel)]="autocompleteDistrito" [suggestions]="filtradoDistritos"  (completeMethod)="busquedaDistrito($event)" 
-    field="nombre" [dropdown]="true" placeholder="Buscar distrito" [minLength]="1" [disabled]="disabledDistritos"></p-autoComplete>
+    field="nombre" [dropdown]="true" placeholder="Buscar distrito" [minLength]="1" [disabled]="disabledDistritos" (onSelect)="seleccionDistrito($event)"></p-autoComplete>
 
 
 </div>

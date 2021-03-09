@@ -85,6 +85,21 @@ export class EstadisticasService {
     
   }
 
+  getPromediosProvinciasPorDepartamentoId(idDepartamento: string){
+    return this.http.get<any>(`${this.url}/prov/${idDepartamento}`)
+    .toPromise()
+    .then(res => <any[]>res.data)
+    .then(data => { return data; });  
+  }
+
+
+  getPromediosDistritosPorProvinciaId(idProvincia: string){
+    return this.http.get<any>(`${this.url}/dist/${idProvincia}`)
+    .toPromise()
+    .then(res => <any[]>res.data)
+    .then(data => { return data; });  
+  }
+
 
 /*
   filterDepartamentosByNombre(nombre: string): Promise<Autocomplete[]>{
