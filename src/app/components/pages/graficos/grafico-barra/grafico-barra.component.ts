@@ -72,7 +72,12 @@ export class GraficoBarraComponent implements OnInit {
 
 
         case 'DISTRITO':
-          console.log('CARGANDO ESTADISTICAS DE DISTRITO')
+          this.estadisticasService.getRangoVulnerablesPorDistritoId(lugarPadre.id).then(rangos=>{
+            if(rangos){
+              this.previaDataBarras=rangos;
+              this.updateDataBarras(`RANGOS POR VULNERABILIDAD DEL DISTRITO ${lugarPadre.nombre}`)
+            }
+          })
           break;
 
 

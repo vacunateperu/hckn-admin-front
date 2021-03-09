@@ -82,7 +82,10 @@ export class EstadisticasService {
   }
 
   getRangoVulnerablesPorDistritoId(idDistrito: string){
-    
+    return this.http.get<any>(`${this.url}/dist/${idDistrito}/rango`)
+    .toPromise()
+    .then(res => <any[]>res.data)
+    .then(data => { return data; });  
   }
 
   getPromediosProvinciasPorDepartamentoId(idDepartamento: string){
